@@ -25,6 +25,66 @@
     </div>
   </div>
 
+  <div class="container">
+    <div class="row">
+      <div>
+        <div class="col-sm">
+          <h2 class="mt-5">Settings</h2>
+        </div>
+        <div>
+          <form>
+            <div class="form-group">
+              <label for="amountOfNodes">Amount of scanning nodes</label>
+              <input type="text" class="form-control" id="amountOfNodes" placeholder="3">
+            </div>
+            <div class="form-group">
+              <label for="startIP">Start IP</label>
+              <input type="text" class="form-control" id="startIP" placeholder="1.2.3.4">
+            </div>
+            <div class="form-group">
+              <label for="endIP">End IP</label>
+              <input type="text" class="form-control" id="endIP" placeholder="1.2.3.255">
+            </div>
+            <div class="form-group">
+              <label for="startPort">Start Port</label>
+              <input type="text" class="form-control" id="startPort" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label for="endPort">End Port</label>
+              <input type="text" class="form-control" id="endPort" placeholder="65353">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Scan type</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>Is-Alive</option>
+                <option>Full TCP connect</option>
+                <option>TCP SYN</option>
+                <option>TCP FIN</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Order</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>Sequential</option>
+                <option>Random</option>
+              </select>
+            </div>
+            <button type="submit" class="mt-2 btn btn-primary">Store Job</button>
+          </form>
+        </div>
+        <div class="mt-4 row">
+          <button type="button" class="btn btn-success">Execute Job</button>
+          <button type="button" class="btn btn-danger">Stop Job</button>
+          <button type="button" class="btn btn-warning">Restart Job</button>
+        </div>
+      </div>
+
+      <div class="col-md">
+        <h2 class="mt-5">Log</h2>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.slim.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
