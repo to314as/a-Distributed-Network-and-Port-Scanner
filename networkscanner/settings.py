@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -25,12 +26,13 @@ SECRET_KEY = '&cxl)h)tl5+_v_3p#=kz)f9ji!-=sd(%5z&js1si0nx2d_3^xg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'starboardscanner_app.apps.StarboardscannerAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +56,8 @@ ROOT_URLCONF = 'networkscanner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [templates],
+        'DIRS': [],
+        # 'DIRS': [templates],  # name 'templates' is not defined
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
