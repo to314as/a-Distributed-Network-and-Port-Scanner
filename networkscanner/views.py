@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 def output(request):
 	print("Lets go")
 	return render(request,'index.html',{'data':"40-120"})

@@ -20,5 +20,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.output,name='output'),
-    path('', views.sender,name='sender')
+    path('', views.sender,name='sender'),
+    path('', include('starboardscanner_app.urls')),
 ]
