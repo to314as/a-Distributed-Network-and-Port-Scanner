@@ -19,7 +19,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.output,name='output'),
-    path('', views.sender,name='sender'),
-    path('', include('starboardscanner_app.urls')),
+    path('', views.output, name='output'),
+    path('', views.sender, name='sender'),
+    path('sb/', include('starboardscanner_app.urls')),
 ]
