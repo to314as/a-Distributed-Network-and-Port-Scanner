@@ -30,6 +30,7 @@ class Report(models.Model):
         choices=SCAN_ORDER_CHOICES,
         default='SEQ'
     )
+    execution_time = models.IntegerField(default=0)
 
 
 class Record(models.Model):

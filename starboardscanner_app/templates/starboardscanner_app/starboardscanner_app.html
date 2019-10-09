@@ -19,7 +19,7 @@
                                  <h2 class="mt-5">Settings</h2>
                              </div>
                              <div>
-                                 <form>
+                                 <form action="#" method="get">
                                      <div class="form-group">
                                          <label for="amountOfNodes">Amount of scanning nodes</label>
                                          <input type="text" class="form-control" id="amountOfNodes" placeholder="3">
@@ -42,7 +42,7 @@
                                      </div>
                                      <div class="form-group">
                                          <label for="exampleFormControlSelect1">Scan type</label>
-                                         <select class="form-control" id="exampleFormControlSelect1">
+                                         <select class="form-control" id="scanType">
                                              <option>Is-Alive</option>
                                              <option>Full TCP connect</option>
                                              <option>TCP SYN</option>
@@ -51,12 +51,12 @@
                                      </div>
                                      <div class="form-group">
                                          <label for="exampleFormControlSelect1">Order</label>
-                                         <select class="form-control" id="exampleFormControlSelect1">
+                                         <select class="form-control" id="scanOrder">
                                            <option>Sequential</option>
                                            <option>Random</option>
                                          </select>
                                      </div>
-                                     <button type="submit" class="mt-2 btn btn-primary">Store Job</button>
+                                     <button type="submit" value="Click" id="submit_job_btn" class="mt-2 btn btn-primary">Store Job</button>
                                  </form>
                              </div>
                              <div class="mt-4 row">
@@ -74,27 +74,28 @@
                     <h2 class="mt-5">Log</h2>
                 </div>
                 <div>
-                    <caption>Report made on {{ report.date_created }}</caption>
-                    <table class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col">Location</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                    <tbody>
-{#                    {% for location_status in report %}#}
-{#                        <tr>#}
-{#                          <th scope="row">1</th>#}
-{#                          <td>{{ location_status.0 }}</td>#}
-{#                        </tr>#}
-{#                        <tr>#}
-{#                          <th scope="row">2</th>#}
-{#                          <<td>{{ location_status.1 }}</td>#}
-{#                        </tr>#}
-{#                    {%  endfor %}#}
-                    </tbody>
-                    </table>
+{#                    <h1>List of Reports</h1>#}
+{#                    <table border="1" width="600">#}
+{#                    <tr>#}
+{#                        <td>IP:PORT</td>#}
+{#                        <td>STATUS</td>#}
+{#                        <td>Video File</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                    <td>{{ report.name }}</td>#}
+{#                    <td>#}
+{#                    {{ video.description }}</td>#}
+{#                    <td><video width='400' controls>#}
+{#                    <source src='{{ MEDIA_URL }}{{ video.videofile }}' type='video/mp4'>#}
+{#                    Your browser does not support the video tag.#}
+{#                    </video>#}
+{#                    </td>#}
+{#                    </tr>#}
+{#                    </table>#}
+                    <b>Report created on{{ report.date_created }}</b><br />
+                    {% for record in report.records.all %}
+                        {{ record.ip_port }}:{{ record.status }}<br />
+                     {% endfor %}
                 </div>
             </div>
         </div>
