@@ -1,4 +1,5 @@
 flask
 requests
 Django==2.2.5
+scapy==2.4.3
 gunicorn==19.9.0
