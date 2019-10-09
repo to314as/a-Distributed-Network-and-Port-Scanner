@@ -1,2 +1,4 @@
+flask
+requests
 Django==2.2.5
 gunicorn==19.9.0
