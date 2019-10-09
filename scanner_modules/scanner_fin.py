@@ -23,6 +23,7 @@ def check_port(ip, port, result = 1):
         elif resp.haslayer(TCP):
             if resp.getlayer(TCP).flags == 0x14:
                 result = 0
+            #icmp is blocked
             elif (int(resp.getlayer(ICMP).type)==3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
                 result = 2
 
