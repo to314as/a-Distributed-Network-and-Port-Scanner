@@ -1,6 +1,7 @@
 import random
 import requests
 import time
+import os
 
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -37,7 +38,7 @@ def request_page(request):
         for i in range(amount_of_nodes):
             containers_dict_send[f'container_{i}'] = 0
             containers_dict_diff[f'container_{i}'] = 0
-            # create containers
+            os.system(f'docker run -p {5000 + i}:5000 --NameOfContainer  python job_processor.py')
 
         job_list = []
         start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
