@@ -1,6 +1,6 @@
-from scapy.all import *
-
-host_ip = '127.0.0.1'
+from scapy.all import IP,sr1,ICMP,TCP,RandShort,sr,L3RawSocket
+conf.L3socket=L3RawSocket
+host_ip = '127.0.0.2'
 
 openp = []
 filterdp = []
@@ -55,5 +55,3 @@ if __name__ == '__main__':
             print (filterdp)
     else:
         print ("Host is Down")
-
-

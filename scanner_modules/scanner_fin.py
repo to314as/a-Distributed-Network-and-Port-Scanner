@@ -1,10 +1,10 @@
-from scapy.all import *
-
-host_ip = '127.0.0.1'
+from scapy.all import IP,sr1,ICMP,TCP,RandShort,L3RawSocket
+conf.L3socket=L3RawSocket
+host_ip = '127.0.0.2'
 
 openp = []
 filterdp = []
-dest_ports = [i for i in range(1,1000)]
+dest_ports = [i for i in range(1000,10000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
     resp = sr1(icmp, timeout=10)
@@ -36,7 +36,6 @@ if __name__ == '__main__':
     conf.verb = 0 
     if is_up(host_ip):
         for port in dest_ports:
-            print (port)
             response = check_port(host_ip, port)
             if response == 1:
                 openp.append(port)
@@ -53,5 +52,3 @@ if __name__ == '__main__':
             print ("No ports open")
     else:
         print("Host is Down")
-
-
