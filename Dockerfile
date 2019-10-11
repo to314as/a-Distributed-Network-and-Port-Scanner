@@ -5,4 +5,4 @@ ADD /network ./
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 EXPOSE 5000
-CMD ["python","./job_processor.py"]
+CMD ["python","./job_processor.py &"]

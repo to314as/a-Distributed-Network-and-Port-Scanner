@@ -7,7 +7,7 @@ filterdp = []
 dest_ports = [i for i in range(1000,10000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
-    resp = sr1(icmp, timeout=10)
+    resp = sr1(icmp, timeout=1)
     if resp == None:
         return False
     else:
@@ -17,7 +17,7 @@ def check_port(ip, port, result = 1):
     src_port = RandShort()
     try:
         p = IP(dst=ip)/TCP(sport=src_port, dport=port, flags='F')
-        resp = sr1(p, timeout=2) # Sending packet
+        resp = sr1(p, timeout=0.5) # Sending packet
         if str(type(resp)) == "<type 'NoneType'>":
             result = 1
         elif resp.haslayer(TCP):

@@ -2,8 +2,10 @@ import asyncio
 import requests
 import sys
 import logging
-
 from flask import Flask, request
+import sys
+sys.path.insert(1, '/scanner_modules')
+import scanner_tcp_socket
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -30,16 +32,25 @@ def give_job():
     return 'Received job!'
 
 
-def send_job_result():
+def send_job_result(open_ports):
     result = {
             "ip_port": "127.0.0.1",
             "status": "Alive",
             "created_by": name_of_container,
-            "report_id": 2
+            "open_ports": open_ports
         }
-    # record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
-    # res = requests.post(record_endpoint_of_django_server, json=result)
+    record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
+    res = requests.post(record_endpoint_of_django_server, json=result)
     print("send job")
+
+async def worker(name, queue):
+    while True:
+        # Get a "work item" out of the queue.
+        job = await queue.get()
+        open_ports=scanner_tcp_socket.main()
+        send_job_result(job[0])
+        # Notify the queue that the "work item" has been processed.
+        queue.task_done()
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1')

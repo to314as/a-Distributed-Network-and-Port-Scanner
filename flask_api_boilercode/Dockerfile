@@ -13,4 +13,4 @@ COPY . /
 
 ENTRYPOINT [ "python3" ]
 
-CMD [ "flask_api_boilercode/job_processor.py" ]
+CMD [ "flask_api_boilercode/job_processor.py &" ]
