@@ -13,11 +13,9 @@ logging.basicConfig(level=logging.DEBUG)
 job_queue = asyncio.Queue()
 
 if len(sys.argv) <= 1:
-    name_of_container = 'default_container_name'
+    name_of_container = 'default_container_name_1'
 else:
     name_of_container = sys.argv[1]
-
-name_of_container = "Cont_1"  # should be id of docker container
 
 @app.route('/', methods=['POST'])
 def give_job():

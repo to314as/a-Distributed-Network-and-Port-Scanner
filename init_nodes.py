@@ -22,8 +22,8 @@ def open_ports(n):
     ports.append(p)
     open_ports+=f'-p 127.1.1.1:{p}:{p} '
   ports=np.array(ports)
-  np.save('victim_ports',ports)
-  return open_ports,ports
+  np.save('victim_ports', ports)
+  return open_ports, ports
 
 #create the victim server with a given number of open ports
 open_ports_string=open_ports(amount_of_ports)[0]
