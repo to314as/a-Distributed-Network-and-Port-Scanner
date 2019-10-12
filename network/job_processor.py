@@ -1,7 +1,21 @@
-from flask import Flask, request
+import asyncio
 import requests
+import sys
+import logging
+from flask import Flask, request
+import sys
+sys.path.insert(1, '/scanner_modules')
+import scanner_tcp_socket
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
+job_queue = asyncio.Queue()
+
+if len(sys.argv) <= 1:
+    name_of_container = 'default_container_name'
+else:
+    name_of_container = sys.argv[1]
 
 name_of_container = "Cont_1"  # should be id of docker container
 
@@ -19,16 +33,16 @@ def give_job():
 def home():
     return 'Started'
 
-def send_job_result():
+def send_job_result(open_ports):
     result = {
-            "ip_port": "127.0.0.1:36",
+            "ip_port": "127.0.0.1",
             "status": "Alive",
-            "created_by": "Container 1",
-            "report_id": 5
+            "created_by": name_of_container,
+            "open_ports": open_ports
         }
     record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
     res = requests.post(record_endpoint_of_django_server, json=result)
     print("send job")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host=f'127.0.0.{name_of_container[-1]}')

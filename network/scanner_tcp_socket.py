@@ -1,11 +1,11 @@
 import socket,sys,os
 os.system('clear')
 
-host_ip = '127.0.0.2'
+host_ip = '127.1.1.1'
 
 open_ports =[]
-start_port = 1000
-end_port = 9999
+start_port = 10000
+end_port = 50000
 
 def probe_port(host, port, result = 1):
 	try:

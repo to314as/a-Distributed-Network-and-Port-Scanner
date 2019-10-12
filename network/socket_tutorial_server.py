@@ -1,7 +1,7 @@
 import socket
 import time
 import argparse
-HOST = '127.0.0.2'  # Standard loopback interface address (localhost)
+HOST = '127.1.1.1'  # Standard loopback interface address (localhost)
 parser = argparse.ArgumentParser(description='Argumetns for client program')
 parser.add_argument('-p', type=int, default=9999, help='the port of the receiver')
 args = parser.parse_args()
