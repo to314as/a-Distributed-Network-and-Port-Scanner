@@ -59,6 +59,11 @@ def home(request):
 
                 containers_dict_send = {}
                 containers_dict_diff = {}
+                os.chdir(os.path.abspath(os.path.dirname(__file__)))
+                os.chdir('..')
+                os.chdir('network')
+                # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
+                os.system('docker build -t n .')
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{i+2}'] = 0
                     containers_dict_diff[f'container_{i+2}'] = 0
@@ -91,7 +96,7 @@ def home(request):
                     job_endpoint_of_flask_scanningnode = f'http://127.0.0.{int(container[-1])}:5000'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
-                Report.objects.get(pk=Report.objects.last()).update(execution_time=(end_time_job - start_time_job))
+                Report.objects.get(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))
                 context = {'report': Report.objects.last(), 'form_logID': LogForm(), 'form_input': ReportForm()}
                 return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
     # # process the data in form.cleaned_data
