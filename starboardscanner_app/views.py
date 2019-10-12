@@ -86,13 +86,13 @@ def home(request):
                     job = {
                         'ip_port': job,
                         'scan_type': scan_type,
-                        'report_id': Report.objects.latest('pk').pk,
+                        'report_id': Report.objects.last().pk,
                     }
                     job_endpoint_of_flask_scanningnode = f'http://127.0.0.{int(container[-1])}:5000'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
-                Report.objects.get(pk=Report.objects.latest('pk')).update(execution_time=(end_time_job - start_time_job))
-                context = {'report': Report.objects.latest(), 'form_logID': LogForm(), 'form_input': ReportForm()}
+                Report.objects.get(pk=Report.objects.last()).update(execution_time=(end_time_job - start_time_job))
+                context = {'report': Report.objects.last(), 'form_logID': LogForm(), 'form_input': ReportForm()}
                 return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
     # # process the data in form.cleaned_data
     else:
