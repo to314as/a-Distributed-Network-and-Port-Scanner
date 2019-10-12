@@ -20,8 +20,8 @@
                              </div>
                                 <form action="#" method="post">
                                     {% csrf_token %}
-                                    {{ form.as_ul }}
-                                    <input type="submit" value="Submit">
+                                    {{ form_input.as_ul }}
+                                    <input name="execute_job_btn" type="submit" value="Submit">
                                 </form>
                              </div>
                          </div>
@@ -33,13 +33,14 @@
                 <div class="col-md">
                     <h2 class="mt-5">Log</h2>
                 </div>
-                <div class="input-group mb-3">
-                    <form method='get' action='#'>
-                        <input id="logID" type="text" class="form-control" placeholder="Log ID e.g. 1" aria-label="Log ID e.g. 1" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button type="submit" value="Clicked" id="request_log_btn" class="btn btn-outline-secondary" >Request Log</button>
-                        </div>
+                <div>
+                </div>
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        {{ form_logID }}
+                        <input name="request_log_btn" type="submit" value="Request log">
                     </form>
+                </div>
 
                 </div>
                 <div>

@@ -47,7 +47,7 @@ async def worker(name, queue):
     while True:
         # Get a "work item" out of the queue.
         job = await queue.get()
-        open_ports=scanner_tcp_socket.main()
+        open_ports = scanner_tcp_socket.main()
         send_job_result(job[0])
         # Notify the queue that the "work item" has been processed.
         queue.task_done()
