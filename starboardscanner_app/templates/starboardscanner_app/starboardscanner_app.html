@@ -18,51 +18,11 @@
                              <div class="col-sm">
                                  <h2 class="mt-5">Settings</h2>
                              </div>
-                             <div>
-                                 <form action="#" method="get">
-                                     <div class="form-group">
-                                         <label for="amountOfNodes">Amount of scanning nodes</label>
-                                         <input type="text" class="form-control" id="amountOfNodes" placeholder="3">
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="startIP">Start IP</label>
-                                         <input type="text" class="form-control" id="startIP" placeholder="1.2.3.4">
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="endIP">End IP</label>
-                                         <input type="text" class="form-control" id="endIP" placeholder="1.2.3.255">
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="startPort">Start Port</label>
-                                         <input type="text" class="form-control" id="startPort" placeholder="0">
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="endPort">End Port</label>
-                                         <input type="text" class="form-control" id="endPort" placeholder="65353">
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="exampleFormControlSelect1">Scan type</label>
-                                         <select class="form-control" id="scanType">
-                                             <option>Is-Alive</option>
-                                             <option>Full TCP connect</option>
-                                             <option>TCP SYN</option>
-                                             <option>TCP FIN</option>
-                                         </select>
-                                     </div>
-                                     <div class="form-group">
-                                         <label for="exampleFormControlSelect1">Order</label>
-                                         <select class="form-control" id="scanOrder">
-                                           <option>Sequential</option>
-                                           <option>Random</option>
-                                         </select>
-                                     </div>
-                                     <button type="submit" value="Click" id="submit_job_btn" class="mt-2 btn btn-primary">Store Job</button>
-                                 </form>
-                             </div>
-                             <div class="mt-4 row">
-                                 <button type="button" class="btn btn-success">Execute Job</button>
-                                 <button type="button" class="btn btn-danger">Stop Job</button>
-                                 <button type="button" class="btn btn-warning">Restart Job</button>
+                                <form action="#" method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_ul }}
+                                    <input type="submit" value="Submit">
+                                </form>
                              </div>
                          </div>
                      </div>
@@ -73,29 +33,36 @@
                 <div class="col-md">
                     <h2 class="mt-5">Log</h2>
                 </div>
+                <div class="input-group mb-3">
+                    <form method='get' action='#'>
+                        <input id="logID" type="text" class="form-control" placeholder="Log ID e.g. 1" aria-label="Log ID e.g. 1" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button type="submit" value="Clicked" id="request_log_btn" class="btn btn-outline-secondary" >Request Log</button>
+                        </div>
+                    </form>
+
+                </div>
                 <div>
-{#                    <h1>List of Reports</h1>#}
-{#                    <table border="1" width="600">#}
-{#                    <tr>#}
-{#                        <td>IP:PORT</td>#}
-{#                        <td>STATUS</td>#}
-{#                        <td>Video File</td>#}
-{#                    </tr>#}
-{#                    <tr>#}
-{#                    <td>{{ report.name }}</td>#}
-{#                    <td>#}
-{#                    {{ video.description }}</td>#}
-{#                    <td><video width='400' controls>#}
-{#                    <source src='{{ MEDIA_URL }}{{ video.videofile }}' type='video/mp4'>#}
-{#                    Your browser does not support the video tag.#}
-{#                    </video>#}
-{#                    </td>#}
-{#                    </tr>#}
-{#                    </table>#}
-                    <b>Report created on{{ report.date_created }}</b><br />
+                    <h3>Report {{ report.id }} created on {{ report.date_created }}</h3>
+                    <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">IP:PORT</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col">CREATED BY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {% for record in report.records.all %}
-                        {{ record.ip_port }}:{{ record.status }}<br />
-                     {% endfor %}
+                        <tr>
+                            <td>{{ record.ip_port }}</td>
+                            <td>{{ record.status }}</td>
+                            <td>{{ record.created_by }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                    </table>
                 </div>
             </div>
         </div>
