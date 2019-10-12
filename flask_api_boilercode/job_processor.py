@@ -54,4 +54,4 @@ async def worker(name, queue):
         queue.task_done()
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1')
+    app.run(debug=True, host=f'127.0.0.{name_of_container[-1]}')
