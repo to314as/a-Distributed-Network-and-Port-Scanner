@@ -45,6 +45,13 @@
                 </div>
                 <div>
                     <h3>Report {{ report.id }} created on {{ report.date_created }}</h3>
+                    <ul>amount_of_nodes {{report.amount_of_nodes}}</ul>
+                    <ul>start_ip {{report.start_ip}}</ul>
+                    <ul>end_ip {{report.end_ip}}</ul>
+                    <ul>start_port {{report.start_port}}</ul>
+                    <ul>end_port {{report.end_port}}</ul>
+                    <ul>scan_type {{report.scan_type}}</ul>
+                    <ul>execution_time {{report.execution_time}}</ul>
                     <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
