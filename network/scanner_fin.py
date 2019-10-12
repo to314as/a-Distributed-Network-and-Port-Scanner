@@ -1,10 +1,10 @@
 from scapy.all import IP,sr1,ICMP,TCP,RandShort,L3RawSocket
 conf.L3socket=L3RawSocket
-host_ip = '127.0.0.1'
+host_ip = '127.1.1.1'
 
 openp = []
 filterdp = []
-dest_ports = [i for i in range(1000,10000)]
+dest_ports = [i for i in range(40000,41000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
     resp = sr1(icmp, timeout=1)

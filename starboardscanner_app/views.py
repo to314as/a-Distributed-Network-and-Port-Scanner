@@ -62,7 +62,7 @@ def home(request):
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{i+2}'] = 0
                     containers_dict_diff[f'container_{i+2}'] = 0
-                    os.system(f'docker run -p 127.0.0.{i+2}:5000:5000 --name container_{i} n python job_processor.py container_{i} &')
+                    os.system(f'docker run -p 127.0.0.{i+2}:5000:5000 --name container_{i+2} n python job_processor.py container_{i+2} &')
 
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
