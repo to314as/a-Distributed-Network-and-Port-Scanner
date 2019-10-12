@@ -10,6 +10,7 @@ from django.template import RequestContext
 from .models import Report, Record
 from .serializers import ReportSerializer, RecordSerializer
 from .forms import ReportForm, LogForm
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -25,6 +26,7 @@ logging.basicConfig(level=logging.DEBUG)
 #         return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
 #     return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
 
+@ensure_csrf_cookie
 def home(request):
     if request.method == 'POST':
         if request.POST.get("request_log_btn"):
@@ -60,7 +62,7 @@ def home(request):
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{i}'] = 0
                     containers_dict_diff[f'container_{i}'] = 0
-                    os.system(f'docker run -d -p {5000 + i}:5000 --name container_{i} python job_processor.py container_{i}')
+                    os.system(f'docker run -d -p {5001 + i}:5000 --name container_{i} n python job_processor.py container_{i}')
 
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
@@ -86,8 +88,7 @@ def home(request):
                         'scan_type': scan_type,
                         'report_id': Report.objects.latest('pk').pk,
                     }
-
-                    job_endpoint_of_flask_scanningnode = f'127.0.0.1:{5000 + int(container[-1])}'  # depends on container
+                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:{5000 + int(container[-1])}'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
                 Report.objects.get(pk=Report.objects.latest('pk')).update(execution_time=(end_time_job - start_time_job))
