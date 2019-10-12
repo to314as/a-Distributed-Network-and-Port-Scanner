@@ -4,8 +4,8 @@ import sys
 import logging
 from flask import Flask, request
 import sys
-sys.path.insert(1, '/scanner_modules')
-import scanner_tcp_socket
+# sys.path.insert(1, '/scanner_modules')
+# import scanner_tcp_socket
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
