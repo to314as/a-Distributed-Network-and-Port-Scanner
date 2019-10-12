@@ -21,7 +21,7 @@ def open_ports(n):
  
 #create the victim server with a given number of open ports
 open_ports=open_ports(amount_of_ports) 
-os.system(f'docker run '+open_ports+' --name victim v python')
+os.system(f'docker run '+open_ports+' --name victim v')
 
 #create the attacker nodes
 for i in range(amount_of_nodes):
