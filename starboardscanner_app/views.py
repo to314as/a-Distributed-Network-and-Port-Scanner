@@ -97,7 +97,7 @@ def home(request):
     # # process the data in form.cleaned_data
     else:
         print("rendering latest report")
-        context = {'report': Report.objects.get(pk=1), 'form_logID': LogForm(),
+        context = {'report': Report.objects.last(), 'form_logID': LogForm(),
                    'form_input': ReportForm()}
         return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
 

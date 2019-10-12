@@ -5,6 +5,7 @@ amount_of_nodes=2
 existing_ports=65535
 amount_of_ports=5
 
+absolute_dirpath = os.path.abspath(os.path.dirname(__file__))
 #create docker images
 os.chdir('/home/tobias/networkscanner/victim') #adjust to your path
 os.system('docker build -t v .')

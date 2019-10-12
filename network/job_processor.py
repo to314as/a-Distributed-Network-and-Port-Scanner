@@ -17,14 +17,16 @@ def give_job():
 
 def send_job_result():
     result = {
-            "ip_port": "127.0.0.1",
+            "ip_port": "127.0.0.1:36",
             "status": "Alive",
             "created_by": "Container 1",
-            "report_id": 2
+            "report_id": 5
         }
-    # record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
-    # res = requests.post(record_endpoint_of_django_server, json=result)
+    record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
+    res = requests.post(record_endpoint_of_django_server, json=result)
     print("send job")
+
+send_job_result()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
