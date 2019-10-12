@@ -1,6 +1,10 @@
-FROM ubuntu:18.04
+#FROM ubuntu:18.04
+FROM python:3.7
 MAINTAINER group4
-RUN apt-get update -y && \
-    apt-get install -y python3-pip python3-dev
+ADD ./ ./
+#RUN apt-get update -y && \
+#    apt-get install -y python3-pip
+#RUN apt-get install python3
+RUN pip install -r requirements.txt
 WORKDIR ./
 
