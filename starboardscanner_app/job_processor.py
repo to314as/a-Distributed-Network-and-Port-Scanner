@@ -5,7 +5,12 @@ import logging
 import random
 import queue
 from flask import Flask, request
-# from starboardscanner_app import *
+# import sys
+# sys.path.append("../Shares/templates")
+# from .scanner_tcp import main as tcpmain
+# from .scanner_tcp import is_up
+# from .scanner_syn import main as synmain
+# from .scanner_fin import main as finmain
 
 logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description="Job processor")
@@ -37,13 +42,13 @@ def generate_random_result(rate):
 
 # def get_status(ip_port, scan_type):
 #     if scan_type == 'TCP SYN':
-#         open_ports = scanner_syn.main(ip_port)
+#         open_ports = tcpmain(ip_port)
 #     elif scan_type == 'TCP FIN':
-#         open_ports = scanner_fin.main(ip_port)
+#         open_ports = finmain(ip_port)
 #     elif scan_type == 'FULL TCP CONNECT':
-#         open_ports = scanner_tcp.main(ip_port)
+#         open_ports = synmain(ip_port)
 #     else:
-#         open_ports = scanner_tcp.is_up(ip_port)
+#         open_ports = is_up(ip_port)
 #     if len(open_ports) == 0:
 #         return 'Down'
 #     else:
