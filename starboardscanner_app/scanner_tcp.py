@@ -5,7 +5,7 @@ import time
 conf.L3socket=L3RawSocket
 dst_ip = '127.0.0.2'
 src_port = RandShort()
-dest_ports = [i for i in range(20000,65535)]
+dst_ports = [i for i in range(20000,65535)]
 
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
@@ -26,19 +26,8 @@ def is_up_udp(ip):
         return True
 
 def tcp_main(dst):
-  file = open("/mnt/testfile.txt", "a+")
-  file.write(str(dst))
-  file.close()
-  dst_ports=[dst.split(":")[1]]
-  dst_ip=dst.split(":")[0]
-  file = open("/mnt/testfile.txt", "a+")
-  file.write(" d_p: "+str(dst_port))
-  file.close()
   open_ports=[]
   for port in dst_ports:
-    file = open("/mnt/testfile.txt", "a+")
-    file.write(" p: "+str(port))
-    file.close()
     port=int(port)
     #establishe a tcp connection
     tcp_connect_scan_resp = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=port,flags="S"),timeout=0.5,verbose=False)
@@ -57,7 +46,4 @@ def tcp_main(dst):
     print(open_ports)
   else:
       print("Host is Down")
-  file = open("/mnt/testfile.txt", "a+")
-  file.write("_scannerend_")
-  file.close()
   return open_ports
