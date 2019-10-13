@@ -26,13 +26,13 @@ def main(dst):
   file = open("/mnt/testfile.txt", "a+")
   file.write(str(dst))
   file.close()
-  dst_port=[dst.split(":")[1]]
+  dst_ports=[dst.split(":")[1]]
   dst_ip=dst.split(":")[0]
   file = open("/mnt/testfile.txt", "a+")
   file.write(" d_p: "+str(dst_port))
   file.close()
   open_ports=[]
-  for port in dst_port:
+  for port in dst_ports:
     file = open("/mnt/testfile.txt", "a+")
     file.write(" p: "+str(port))
     file.close()

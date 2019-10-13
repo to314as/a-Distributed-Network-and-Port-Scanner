@@ -31,7 +31,7 @@ def give_job():
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
     if scan_type=='TCP SYN':
-      open_ports=scanner_fin.main(ip_port)
+      open_ports=scanner_syn.main(ip_port)
     elif scan_type=='TCP FIN':
       open_ports=scanner_fin.main(ip_port)
     elif scan_type=='FULL TCP CONNECT':

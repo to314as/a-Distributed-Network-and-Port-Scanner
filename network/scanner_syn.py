@@ -13,9 +13,9 @@ def is_up(ip):
     else:
         return True
 
-def main(dst_ports):
+def main(dst):
   conf.verb = 0 
-  dest_port=[dst.split(":")[1]]
+  dest_ports=[dst.split(":")[1]]
   host_ip=dst.split(":")[0]
   openp=[]
   if is_up(host_ip):

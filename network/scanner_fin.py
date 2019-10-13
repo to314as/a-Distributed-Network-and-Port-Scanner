@@ -26,15 +26,14 @@ def check_port(ip, port, result = 1):
             #icmp is blocked
             elif (int(resp.getlayer(ICMP).type)==3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
                 result = 2
-
     except Exception as e:
         pass
     return result
 
-def main(dest_ports):
+def main(dst):
   conf.verb = 0
   openp=[]
-  dest_port=[dst.split(":")[1]]
+  dest_ports=[dst.split(":")[1]]
   host_ip=dst.split(":")[0]
   for port in dest_ports:
       response = check_port(host_ip, port)

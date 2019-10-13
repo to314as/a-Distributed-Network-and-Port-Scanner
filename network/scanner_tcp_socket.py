@@ -19,8 +19,8 @@ def probe_port(host, port, result = 1):
 
 	return result
  
-def main(dst_ports):
-    dest_port=[dst.split(":")[1]]
+def main(dst):
+    dest_ports=[dst.split(":")[1]]
     host_ip=dst.split(":")[0]
     for p in dest_ports:
     	sys.stdout.flush() #don't store things in the buffer put if there are "news" write them immediatly

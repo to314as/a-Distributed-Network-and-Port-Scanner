@@ -17,8 +17,8 @@ def bannergrabbing(addr, port):
  except:
   return 0,""
   
-def main(dest_ip):
-  dest_port=[dst.split(":")[1]]
+def main(dst):
+  dest_ports=[dst.split(":")[1]]
   host_ip=dst.split(":")[0]
   openp=[]
       for port in dest_ports:
