@@ -66,7 +66,7 @@ def give_job():
         (ip_port, scan_type, report_id) = job_queue.get()
         # send_job_result(ip_port, get_status(ip_port, scan_type))
         print('calling send job result')
-        send_job_result(ip_port, generate_random_result(0.8))
+        send_job_result(ip_port, generate_random_result(0.8), report_id)
     print(f'{ip_port} {report_id} {scan_type} {created_by}')
     return 'Received job!'
 
@@ -76,13 +76,12 @@ def home():
     return 'Started'
 
 
-def send_job_result(ip_port, status):
-    print('startomg semdomg')
+def send_job_result(ip_port, status, report_id):
     result = {
         "ip_port": ip_port,
         "status": status,
         "created_by": name_of_container,
-        "report_id": args.reportid,
+        "report_id": report_id,
     }
     record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
     res = requests.post(record_endpoint_of_django_server, json=result)

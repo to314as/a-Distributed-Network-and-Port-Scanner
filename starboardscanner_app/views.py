@@ -1,4 +1,5 @@
 import random
+import signal
 import requests
 import time
 import os
@@ -72,12 +73,14 @@ def home(request):
                 # os.chdir('victim')
                 # os.system(f'python create_victim.py {start_ip}')
                 print('creating nodes')
+                processes = []
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{5000 + i}'] = 0
                     containers_dict_diff[f'container_{5000 + i}'] = 0
                     # os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
                     print(f'{sys.executable} {os.path.abspath(os.path.dirname(__file__))}\\job_processor.py')
-                    subprocess.Popen([f'{sys.executable}', f'{os.path.abspath(os.path.dirname(__file__))}\\job_processor.py', f'-p {5000 + i}', f'-i {Report.objects.last().pk}'])
+                    a_subprocess = subprocess.Popen([f'{sys.executable}', f'{os.path.abspath(os.path.dirname(__file__))}\\job_processor.py', f'-p {5000 + i}', f'-i {Report.objects.last().pk}'])
+                    processes.append(a_subprocess)
                 print('nodes created')
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
@@ -98,31 +101,28 @@ def home(request):
 
                 for job in job_list:
                     for key, value in containers_dict_send.items():
-                        print(f"key {key} value {value}")
-                        print(f'diff: {containers_dict_diff[key]}')
-                        print(f'send: {containers_dict_send[key]}')
                         received_cnt = Record.objects.filter(created_by=key).count()
                         containers_dict_diff[key] = containers_dict_send[key] - received_cnt
                     # container = max(containers_dict_diff, key=containers_dict_diff.get)
                     container = min(containers_dict_send, key=containers_dict_send.get)
                     print(container)
-                    print(container.split("_")[-1])
                     containers_dict_send[container] += 1
+
                     job = {
                         'ip_port': job,
                         'scan_type': scan_type,
                         'report_id': Report.objects.last().pk,
                     }
+
                     job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:{container.split("_")[-1]}'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
-                print('times')
-                print(end_time_job)
-                print(start_time_job)
                 print('jobs send')
                 Report.objects.filter(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))
                 context = {'report': Report.objects.last(), 'form_logID': LogForm(), 'form_input': ReportForm()}
                 print('rendering new context')
+                for flask_process in processes:
+                    flask_process.kill()
                 return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
     # # process the data in form.cleaned_data
     else:
