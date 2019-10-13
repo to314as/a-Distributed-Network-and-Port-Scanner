@@ -1,6 +1,6 @@
 import argparse
 import scapy
-from scapy.all import sniff,Ether, ARP, srp, IP, UDP, raw, hexdump, sendp, Packet, XByteField, X3BytesField, DNS, ShortEnumField, ShortField, XShortField, AsyncSniffer,bind_layers
+from scapy.all import *
 from scapy.data import UDP_SERVICES
 
 ##aasignment3###

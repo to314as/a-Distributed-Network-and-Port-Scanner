@@ -30,11 +30,11 @@ open_ports_string=open_ports(amount_of_ports)[0]
 open_ports=open_ports(amount_of_ports)[1]
 print(open_ports)
 os.system(f'docker run '+open_ports_string+f' --name victim --cap-add=NET_ADMIN v python3 setup_server.py {open_ports} &')
-
-# create the attacker nodes
-os.chdir(os.path.join(absolute_dirpath, "network"))
-# os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
-os.system('docker build -t n .')
-
-for i in range(amount_of_nodes):
-            os.system(f'docker run -p {5001 + i}:5000 --name n{i} --cap-add=NET_ADMIN n python job_processor.py container_{i} &')
+#
+# # create the attacker nodes
+# os.chdir(os.path.join(absolute_dirpath, "network"))
+# # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
+# os.system('docker build -t n .')
+#
+# for i in range(amount_of_nodes):
+#             os.system(f'docker run -p {5001 + i}:5000 --name n{i} --cap-add=NET_ADMIN n python job_processor.py container_{i} &')

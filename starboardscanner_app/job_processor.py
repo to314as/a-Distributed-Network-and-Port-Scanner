@@ -3,8 +3,9 @@ import requests
 import argparse
 import logging
 import random
-import time
+import queue
 from flask import Flask, request
+# from starboardscanner_app import *
 
 logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description="Job processor")
@@ -14,49 +15,58 @@ parser.add_argument("-i", "--reportid", type=int, help="Report ID")
 args = parser.parse_args()
 
 app = Flask(f'{__name__}_{args.port}')
-job_queue = asyncio.Queue()
+job_queue = queue.Queue()
 
 name_of_container = f'container_{args.port}'
 running_scan_flag = False
-
-
-def not_running_scan():
-    global running_scan_flag
-    running_scan_flag = False
-
 
 def running_scan():
     global running_scan_flag
     running_scan_flag = True
 
+def not_running_scan():
+    global running_scan_flag
+    running_scan_flag = False
 
 def generate_random_result(rate):
     if random.random() < rate:
-        return 'Alive'
+        return 'Up'
     else:
-        return 'Not Alive'
+        return 'Down'
+
+
+# def get_status(ip_port, scan_type):
+#     if scan_type == 'TCP SYN':
+#         open_ports = scanner_syn.main(ip_port)
+#     elif scan_type == 'TCP FIN':
+#         open_ports = scanner_fin.main(ip_port)
+#     elif scan_type == 'FULL TCP CONNECT':
+#         open_ports = scanner_tcp.main(ip_port)
+#     else:
+#         open_ports = scanner_tcp.is_up(ip_port)
+#     if len(open_ports) == 0:
+#         return 'Down'
+#     else:
+#         return 'Up'
 
 
 @app.route('/', methods=['POST'])
 def give_job():
+    print(f'running scan flag {running_scan_flag}')
     job_json = request.get_json(force=True)
     ip_port = job_json['ip_port']
     created_by = name_of_container
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
     job_queue.put((ip_port, scan_type, report_id))
-    result = {
-        "ip_port": ip_port,
-        "status": generate_random_result(0.8),
-        "created_by": name_of_container,
-        "report_id": args.reportid,
-    }
-    time.sleep(0.01)
-    record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
-    res = requests.post(record_endpoint_of_django_server, json=result)
+    print('put in job queue')
+    print(f'running scan flag {running_scan_flag}')
     if not running_scan_flag:
         running_scan()
-        # pop first item off queue and process it
+        (ip_port, scan_type, report_id) = job_queue.get()
+        # send_job_result(ip_port, get_status(ip_port, scan_type))
+        print('calling send job result')
+        send_job_result(ip_port, generate_random_result(0.8))
     print(f'{ip_port} {report_id} {scan_type} {created_by}')
     return 'Received job!'
 
@@ -67,6 +77,7 @@ def home():
 
 
 def send_job_result(ip_port, status):
+    print('startomg semdomg')
     result = {
         "ip_port": ip_port,
         "status": status,
@@ -78,7 +89,9 @@ def send_job_result(ip_port, status):
     not_running_scan()
     if not job_queue.empty():
         running_scan()
-        # pop first item of queue and process it
+        (ip_port, scan_type, report_id) = job_queue.get()
+        # send_job_result(ip_port, get_status(ip_port, scan_type))
+        send_job_result(ip_port, generate_random_result(0.8))
     print("send job")
 
 

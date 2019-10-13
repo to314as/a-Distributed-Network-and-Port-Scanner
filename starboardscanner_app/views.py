@@ -67,6 +67,10 @@ def home(request):
                 # os.chdir('network')
                 # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
                 # os.system('docker build -t n .')
+                # os.chdir(os.path.abspath(os.path.dirname(__file__)))
+                # os.chdir('..')
+                # os.chdir('victim')
+                # os.system(f'python create_victim.py {start_ip}')
                 print('creating nodes')
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{5000 + i}'] = 0
@@ -87,9 +91,11 @@ def home(request):
                     print(scan_order)
                     random.shuffle(job_list)
                 current_time_wait = time.time()
-                while time.time() - current_time_wait < amount_of_nodes * 2:
+                while time.time() - current_time_wait < amount_of_nodes:
                     continue
                 start_time_job = time.process_time()
+
+
                 for job in job_list:
                     for key, value in containers_dict_send.items():
                         print(f"key {key} value {value}")
@@ -97,7 +103,8 @@ def home(request):
                         print(f'send: {containers_dict_send[key]}')
                         received_cnt = Record.objects.filter(created_by=key).count()
                         containers_dict_diff[key] = containers_dict_send[key] - received_cnt
-                    container = min(containers_dict_diff, key=containers_dict_diff.get)
+                    # container = max(containers_dict_diff, key=containers_dict_diff.get)
+                    container = min(containers_dict_send, key=containers_dict_send.get)
                     print(container)
                     print(container.split("_")[-1])
                     containers_dict_send[container] += 1
@@ -109,6 +116,9 @@ def home(request):
                     job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:{container.split("_")[-1]}'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
+                print('times')
+                print(end_time_job)
+                print(start_time_job)
                 print('jobs send')
                 Report.objects.filter(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))
                 context = {'report': Report.objects.last(), 'form_logID': LogForm(), 'form_input': ReportForm()}

@@ -15,8 +15,8 @@
                  <div class="container">
                      <div class="row">
                          <div>
-                             <div class="col-sm">
-                                 <h2 class="mt-5">Settings</h2>
+                             <div>
+                                 <h3 class="mt-5">Settings</h3>
                              </div>
                                 <form action="#" method="post">
                                     {% csrf_token %}
@@ -39,30 +39,52 @@
                  </div>
             </div>
             <div class="col-xs-6">
+                <div class="container">
+                     <div class="row">
+                         <div>
+                             <div>
+                            <h3 class="mt-5">Log</h3>
+                        </div>
+                        <div>
+                            <form action="#" method="post">
+                            {% csrf_token %}
+                                {{ form_logID }}
+                            <input name="request_log_btn" type="submit" value="Request log">
+                            </form>
+                        </div>
+                         </div>
+                     </div>
+                </div>
+                  <div>
+                    <h3 class="mt-5">Report {{ report.id }} created on {{ report.date_created }}</h3>
+                    <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">NUMBER OF NODES</th>
+                            <th scope="col">START_IP</th>
+                            <th scope="col">END_IP</th>
+                            <th scope="col">START_PORT</th>
+                            <th scope="col">END_PORT</th>
+                            <th scope="col">SCAN_TYPE</th>
+                            <th scope="col">SCAN_ORDER</th>
+                            <th scope="col">EXECUTION_TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                             <td>{{report.amount_of_nodes}}</td>
+                             <td>{{report.start_ip}}</td>
+                             <td> {{report.end_ip}}</td>
+                             <td>{{report.start_port}}</td>
+                             <td>{{report.end_port}}</td>
+                             <td>{{report.scan_type}}</td>
+                             <td>{{report.scan_order}}</td>
+                             <td>{{report.execution_time}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
 
-                <div class="col-md">
-                    <h2 class="mt-5">Log</h2>
-                </div>
-                <div>
-                </div>
-                    <form action="#" method="post">
-                        {% csrf_token %}
-                        {{ form_logID }}
-                        <input name="request_log_btn" type="submit" value="Request log">
-                    </form>
-                </div>
 
-                </div>
-                <div>
-                    <h3>Report {{ report.id }} created on {{ report.date_created }}</h3>
-                    <ul>amount_of_nodes {{report.amount_of_nodes}}</ul>
-                    <ul>start_ip {{report.start_ip}}</ul>
-                    <ul>end_ip {{report.end_ip}}</ul>
-                    <ul>start_port {{report.start_port}}</ul>
-                    <ul>end_port {{report.end_port}}</ul>
-                    <ul>scan_type {{report.scan_type}}</ul>
-                    <ul>scan_order {{report.scan_order}}</ul>
-                    <ul>execution_time {{report.execution_time}}</ul>
                     <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -83,7 +105,6 @@
 
                     </table>
                 </div>
-            </div>
         </div>
     </div>
 {% endblock starboardscanner_dashboard %}

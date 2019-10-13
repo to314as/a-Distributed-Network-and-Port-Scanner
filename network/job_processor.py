@@ -6,10 +6,10 @@ import logging
 from flask import Flask, request
 import sys
 sys.path.insert(1, '/scanner_modules')
-import scanner_tcp_socket
-import scanner_tcp
-import scanner_fin
-import scanner_syn
+from network import scanner_tcp_socket
+from network import scanner_tcp
+from network import scanner_fin
+from network import scanner_syn
 
 
 logging.basicConfig(level=logging.DEBUG)
