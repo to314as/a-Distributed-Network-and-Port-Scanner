@@ -2,8 +2,9 @@ import asyncio
 import requests
 import argparse
 import logging
+import random
+import time
 from flask import Flask, request
-
 
 logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description="Job processor")
@@ -29,6 +30,13 @@ def running_scan():
     running_scan_flag = True
 
 
+def generate_random_result(rate):
+    if random.random() < rate:
+        return 'Alive'
+    else:
+        return 'Not Alive'
+
+
 @app.route('/', methods=['POST'])
 def give_job():
     job_json = request.get_json(force=True)
@@ -37,7 +45,15 @@ def give_job():
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
     job_queue.put((ip_port, scan_type, report_id))
-
+    result = {
+        "ip_port": ip_port,
+        "status": generate_random_result(0.8),
+        "created_by": name_of_container,
+        "report_id": args.reportid,
+    }
+    time.sleep(0.01)
+    record_endpoint_of_django_server = 'http://127.0.0.1:8000/sb/records/'
+    res = requests.post(record_endpoint_of_django_server, json=result)
     if not running_scan_flag:
         running_scan()
         # pop first item off queue and process it

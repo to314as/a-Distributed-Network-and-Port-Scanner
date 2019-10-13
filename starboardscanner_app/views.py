@@ -56,7 +56,7 @@ def home(request):
                 scan_order = form.cleaned_data['scan_order']
 
                 current_report = Report(amount_of_nodes=amount_of_nodes, start_ip=start_ip, end_ip=end_ip,
-                                        start_port=start_port,
+                                        start_port=start_port, end_port=end_port,
                                         scan_type=scan_type, scan_order=scan_order)
                 current_report.save()
                 print("report template saved")
@@ -69,8 +69,8 @@ def home(request):
                 # os.system('docker build -t n .')
                 print('creating nodes')
                 for i in range(amount_of_nodes):
-                    containers_dict_send[f'container_{i}'] = 0
-                    containers_dict_diff[f'container_{i}'] = 0
+                    containers_dict_send[f'container_{5000 + i}'] = 0
+                    containers_dict_diff[f'container_{5000 + i}'] = 0
                     # os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
                     print(f'{sys.executable} {os.path.abspath(os.path.dirname(__file__))}\\job_processor.py')
                     subprocess.Popen([f'{sys.executable}', f'{os.path.abspath(os.path.dirname(__file__))}\\job_processor.py', f'-p {5000 + i}', f'-i {Report.objects.last().pk}'])
@@ -83,19 +83,23 @@ def home(request):
                         curr_ip_port = start_ip[:-len(str(start_ip_end))] + str(ip) + ":" + str(port)
                         job_list.append(curr_ip_port)
                 print('job list created')
-                if scan_order is 'RAND':
+                if scan_order == 'RAND':
                     print(scan_order)
                     random.shuffle(job_list)
                 current_time_wait = time.time()
-                while time.time() - current_time_wait < 5:
+                while time.time() - current_time_wait < amount_of_nodes * 2:
                     continue
                 start_time_job = time.process_time()
                 for job in job_list:
                     for key, value in containers_dict_send.items():
+                        print(f"key {key} value {value}")
+                        print(f'diff: {containers_dict_diff[key]}')
+                        print(f'send: {containers_dict_send[key]}')
                         received_cnt = Record.objects.filter(created_by=key).count()
                         containers_dict_diff[key] = containers_dict_send[key] - received_cnt
                     container = min(containers_dict_diff, key=containers_dict_diff.get)
                     print(container)
+                    print(container.split("_")[-1])
                     containers_dict_send[container] += 1
                     job = {
                         'ip_port': job,
