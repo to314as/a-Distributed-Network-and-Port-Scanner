@@ -71,8 +71,8 @@ def home(request):
                 # os.chdir(os.path.abspath(os.path.dirname(__file__)))
                 # os.chdir('..')
                 # os.chdir('victim')
-                # os.system(f'python create_victim.py {start_ip}')
-                # print('creating nodes')
+                # os.system(f'python create_victim.py -a {start_ip}')
+                print('creating nodes')
                 processes = []
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{5000 + i}'] = 0

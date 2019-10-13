@@ -7,7 +7,7 @@ amount_of_nodes = 2
 existing_ports = 65535
 amount_of_ports = 5
 parser = argparse.ArgumentParser(description="Create victim")
-parser.add_argument("-a", "--address", type=int, help="Get ip address")
+parser.add_argument("-a", "--address", help="Get ip address")
 
 args = parser.parse_args()
 
@@ -15,7 +15,8 @@ args = parser.parse_args()
 absolute_dirpath = os.path.abspath(os.path.dirname(__file__))
 os.chdir(os.path.join(absolute_dirpath))
 # os.chdir('/home/tobias/networkscanner/victim')  # adjust to your path
-os.system('docker build -t v .')
+# os.system('docker build -t v .')
+
 
 
 # a function to define a random subset of open ports on the victim machine
@@ -37,3 +38,4 @@ open_ports = open_ports(amount_of_ports)[1]
 print(open_ports)
 os.system(
     f'docker run ' + open_ports_string + f' --name victim --cap-add=NET_ADMIN v python3 setup_server.py {open_ports} &')
+print('ran docker')
