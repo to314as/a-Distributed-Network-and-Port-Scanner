@@ -3,6 +3,9 @@ import requests
 import time
 import os
 import logging
+import sys
+import subprocess
+import time
 
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -16,7 +19,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 #
-# # Create your views here.
+# #Af Create your views here.
 # def home(request):
 #     print("home")
 #     print(request.GET.get('submit_job_btn'))
@@ -56,19 +59,22 @@ def home(request):
                                         start_port=start_port,
                                         scan_type=scan_type, scan_order=scan_order)
                 current_report.save()
-
+                print("report template saved")
                 containers_dict_send = {}
                 containers_dict_diff = {}
-                os.chdir(os.path.abspath(os.path.dirname(__file__)))
-                os.chdir('..')
-                os.chdir('network')
+                # os.chdir(os.path.abspath(os.path.dirname(__file__)))
+                # os.chdir('..')
+                # os.chdir('network')
                 # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
-                os.system('docker build -t n .')
+                # os.system('docker build -t n .')
+                print('creating nodes')
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{i}'] = 0
                     containers_dict_diff[f'container_{i}'] = 0
-                    os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
-
+                    # os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
+                    print(f'{sys.executable} {os.path.abspath(os.path.dirname(__file__))}\\job_processor.py')
+                    subprocess.Popen([f'{sys.executable}', f'{os.path.abspath(os.path.dirname(__file__))}\\job_processor.py', f'-p {5000 + i}', f'-i {Report.objects.last().pk}'])
+                print('nodes created')
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
                 end_ip_end = [int(x) for x in map(str.strip, end_ip.split('.')) if x][-1]
@@ -76,28 +82,33 @@ def home(request):
                     for port in range(start_port, end_port + 1):
                         curr_ip_port = start_ip[:-len(str(start_ip_end))] + str(ip) + ":" + str(port)
                         job_list.append(curr_ip_port)
-
-                if scan_order is 'Random' or 'RAND':
+                print('job list created')
+                if scan_order is 'RAND':
                     print(scan_order)
                     random.shuffle(job_list)
-
+                current_time_wait = time.time()
+                while time.time() - current_time_wait < 5:
+                    continue
                 start_time_job = time.process_time()
                 for job in job_list:
                     for key, value in containers_dict_send.items():
                         received_cnt = Record.objects.filter(created_by=key).count()
                         containers_dict_diff[key] = containers_dict_send[key] - received_cnt
                     container = min(containers_dict_diff, key=containers_dict_diff.get)
+                    print(container)
                     containers_dict_send[container] += 1
                     job = {
                         'ip_port': job,
                         'scan_type': scan_type,
                         'report_id': Report.objects.last().pk,
                     }
-                    job_endpoint_of_flask_scanningnode = f'http://0.0.0.0:{5001}'  # depends on container
+                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:{container.split("_")[-1]}'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
-                Report.objects.get(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))
+                print('jobs send')
+                Report.objects.filter(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))
                 context = {'report': Report.objects.last(), 'form_logID': LogForm(), 'form_input': ReportForm()}
+                print('rendering new context')
                 return render(request, 'starboardscanner_app/starboardscanner_app.html', context)
     # # process the data in form.cleaned_data
     else:
