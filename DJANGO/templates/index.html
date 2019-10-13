@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Network and Port Scanner</title>
+
+    <!-- Import jQuery -->
+    <script src="jquery-3.4.1.js" type="text/javascript"></script>
+
+    <!-- Import Popper -->
+    <script src="popper.min.js" type="text/javascript"></script>
+
+    <!-- Import Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="bootstrap.js" type="text/javascript"></script>
+
+    <!-- Import custom CSS -->
+    <link rel="stylesheet" type="text/css" href="templates/custom.css" />
+
+    <!-- Responsive to mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="navbar sticky-top navbar-light bg-light">
+      <a class="navbar-brand" href="#">Network and Port Scanner</a>
+      <button onclick="window.open('https://github.com/', 'blank')" class="btn btn-outline-dark" type="button" name="button">GitHub</button>
+    </nav>
+
+    <!-- Forms -->
+    <!-- Check alive IP address -->
+    <form class="top-buffer left-buffer">
+      <div class="form-group">
+        <label for="ip_1">IP address</label>
+        <input type="text" class="form-control input-mod" id="ip_1" aria-describedby="ip_help_1" placeholder="e.g. 127.0.0.2">
+        <small id="ip_help_1" class="form-text text-muted">Use dots to separate the blocks of the address.</small>
+      </div>
+      <button type="submit" class="btn btn-primary">Is it alive?</button>
+    </form>
+
+    <!-- Check which IP addresses are alive in a given range -->
+    <form class="top-buffer-2 left-buffer">
+      <div class="form-group">
+        <label for="ip_2">IP address range</label>
+        <input type="text" class="form-control input-mod" id="ip_2" aria-describedby="ip_help_2" placeholder="e.g. 127.0.0.0/255">
+        <small id="ip_help_2" class="form-text text-muted">
+          Use dots to separate the blocks of the address<br> and a forward slash to indicate the range.
+        </small>
+      </div>
+      <button type="submit" class="btn btn-primary" onclick="location.href='{%url 'sender' %}'">Which are alive?</button>
+      {%if data%}
+      {{data}}
+      {%endif%}
+    </form>
+
+
+    <!-- Footer -->
+    <footer class="fixed-bottom page-footer font-small blue">
+      <div class="footer-copyright text-center py-3">© 2017 GNU General Public License:
+        <a></a>
+      </div>
+    </footer>
+
+  </body>
+</html>
