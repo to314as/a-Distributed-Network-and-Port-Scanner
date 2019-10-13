@@ -4,7 +4,7 @@ host_ip = '127.1.1.1'
 
 openp = []
 filterdp = []
-dest_ports = [i for i in range(40000,41000)]
+dest_ports = [i for i in range(22000,23000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
     resp = sr1(icmp, timeout=1)
@@ -31,7 +31,28 @@ def check_port(ip, port, result = 1):
         pass
     return result
 
-
+def main(dest_ports):
+  conf.verb = 0
+  openp=[]
+  dest_port=[dst.split(":")[1]]
+  host_ip=dst.split(":")[0]
+  for port in dest_ports:
+      response = check_port(host_ip, port)
+      if response == 1:
+          openp.append(port)
+      elif response == 2:
+          filterdp.append(port)
+  if len(openp) != 0:
+      print ("Possible Open or Filtered Ports:")
+      print (openp)
+  if len(filterdp) != 0:
+      print ("Possible Filtered Ports:")
+      print (filterdp)
+  if (len(openp) == 0) and (len(filterdp) == 0):
+          print ("No ports open")
+  return openp
+        
+        
 if __name__ == '__main__':
     conf.verb = 0 
     if is_up(host_ip):

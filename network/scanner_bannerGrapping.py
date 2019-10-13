@@ -17,6 +17,21 @@ def bannergrabbing(addr, port):
  except:
   return 0,""
   
+def main(dest_ip):
+  dest_port=[dst.split(":")[1]]
+  host_ip=dst.split(":")[0]
+  openp=[]
+      for port in dest_ports:
+          response,banner = bannergrabbing(host_ip, port)
+          print(banner)
+          if response == 1:
+              openp.append(port)
+      if len(openp) != 0:
+          print ("Possible Open or Filtered Ports:")
+          print (openp)
+      if len(openp) == 0:
+          print ("No ports open")
+  return openp
 if __name__ == '__main__':
       openp=[]
       for port in dest_ports:
