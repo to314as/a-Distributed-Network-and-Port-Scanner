@@ -13,6 +13,32 @@ def is_up(ip):
     else:
         return True
 
+def main(dst_ports):
+  conf.verb = 0 
+  dest_port=[dst.split(":")[1]]
+  host_ip=dst.split(":")[0]
+  openp=[]
+  if is_up(host_ip):
+      for port in dest_ports:
+          print (port)
+          response = check_port(host_ip, port)
+          if response == 1:
+              openp.append(port)
+
+      if len(openp) != 0:
+          print ("Open Ports:")
+          print (openp)
+      else:
+          print ("No ports open")
+
+      if len(filterdp) != 0:
+          print ("Possible Filtered Ports:")
+          print (filterdp)
+      return openp
+  else:
+      print ("Host is Down")
+  return openp
+        
 def check_port(ip, port, result = 1):
     src_port = RandShort()
     try:

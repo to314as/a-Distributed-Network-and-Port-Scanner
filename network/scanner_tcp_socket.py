@@ -4,8 +4,7 @@ os.system('clear')
 host_ip = '127.1.1.1'
 
 open_ports =[]
-start_port = 10000
-end_port = 50000
+dst_ports = [i for i in range(40000,41000)]
 
 def probe_port(host, port, result = 1):
 	try:
@@ -19,14 +18,30 @@ def probe_port(host, port, result = 1):
 		pass
 
 	return result
-
-for p in range(start_port, end_port+1):
+ 
+def main(dst_ports):
+    dest_port=[dst.split(":")[1]]
+    host_ip=dst.split(":")[0]
+    for p in dest_ports:
+    	sys.stdout.flush() #don't store things in the buffer put if there are "news" write them immediatly
+    	response = probe_port(host_ip,p)
+    	if response == 0:
+          open_ports.append(p)
+    	if not p == end_port:
+          sys.stdout.write('\b' * len(str(p)))
+  	
+    if open_ports:
+    	print("Open Ports")
+    	print(sorted(open_ports))
+    else:
+    	print("No ports open")
+    return sorted(open_ports)
+ 
+for p in dst_ports:
 	sys.stdout.flush() #don't store things in the buffer put if there are "news" write them immediatly
 	response = probe_port(host_ip, p)
 	if response == 0:
 		open_ports.append(p)
-	if not p == end_port:
-		sys.stdout.write('\b' * len(str(p)))
 	
 if open_ports:
 	print("Open Ports")
