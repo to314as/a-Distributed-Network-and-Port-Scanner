@@ -1,23 +1,6 @@
 import os
-
-import docker
 import requests
 import subprocess
-
-# create docker images
-absolute_dirpath = os.path.abspath(os.path.dirname(__file__))
-os.chdir(os.path.join(absolute_dirpath, "victim"))
-
-# create the attacker nodes
-#os.chdir(os.path.join(absolute_dirpath, "network"))
-os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
-os.system('docker build -t n .')
-os.system(f'docker run -d -p 127.0.0.1:50010:50010 --cap-add=NET_ADMIN --name n3 n  python job_processor.py n3 &')
-result = subprocess.run(['docker', 'inspect', '-f', '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}', ], stdout=subprocess.PIPE)
-
-print('result')
-print(result.stdout)
-print('end result')
 #
 # client = docker.from_env()
 # container = client.containers.run(image='n', ports={'5000/tcp': ('127.0.0.1', 5000)},

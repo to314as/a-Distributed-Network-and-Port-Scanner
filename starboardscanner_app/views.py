@@ -65,9 +65,9 @@ def home(request):
                 # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
                 os.system('docker build -t n .')
                 for i in range(amount_of_nodes):
-                    containers_dict_send[f'container_{i+2}'] = 0
-                    containers_dict_diff[f'container_{i+2}'] = 0
-                    os.system(f'docker run -p 127.0.0.{i+2}:5000:5000 --name container_{i+2} n python job_processor.py container_{i+2} &')
+                    containers_dict_send[f'container_{i}'] = 0
+                    containers_dict_diff[f'container_{i}'] = 0
+                    os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
 
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
@@ -93,7 +93,7 @@ def home(request):
                         'scan_type': scan_type,
                         'report_id': Report.objects.last().pk,
                     }
-                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.{int(container[-1])}:5000'  # depends on container
+                    job_endpoint_of_flask_scanningnode = f'http://0.0.0.0:{5001}'  # depends on container
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
                 Report.objects.get(pk=Report.objects.last().pk).update(execution_time=(end_time_job - start_time_job))

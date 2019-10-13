@@ -43,4 +43,4 @@ def send_job_result(open_ports):
     print("send job")
 
 if __name__ == '__main__':
-    app.run(debug=True, host=f'127.0.0.{name_of_container[-1]}')
+    app.run(debug=True, host='0.0.0.0')
