@@ -1,10 +1,11 @@
 from scapy.all import IP,sr1,ICMP,TCP,RandShort,L3RawSocket
+import time
 conf.L3socket=L3RawSocket
 host_ip = '127.1.1.1'
 
 openp = []
 filterdp = []
-dest_ports = [i for i in range(22000,23000)]
+dest_ports = [i for i in range(22000,25000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
     resp = sr1(icmp, timeout=1)
@@ -17,7 +18,7 @@ def check_port(ip, port, result = 1):
     src_port = RandShort()
     try:
         p = IP(dst=ip)/TCP(sport=src_port, dport=port, flags='F')
-        resp = sr1(p, timeout=0.1) # Sending packet
+        resp = sr1(p, timeout=0.5) # Sending packet
         if str(type(resp)) == "<type 'NoneType'>":
             result = 1
         elif resp.haslayer(TCP):
@@ -54,23 +55,22 @@ def main(dst):
         
 if __name__ == '__main__':
     conf.verb = 0 
-    if is_up(host_ip):
-        for port in dest_ports:
-            response = check_port(host_ip, port)
-            if response == 1:
-                openp.append(port)
-            elif response == 2:
-                filterdp.append(port)
+    start=time.time()
+    for port in dest_ports:
+        response = check_port(host_ip, port)
+        if response == 1:
+            openp.append(port)
+        elif response == 2:
+            filterdp.append(port)
 
-        if len(openp) != 0:
-            print ("Possible Open or Filtered Ports:")
-            print (openp)
-        if len(filterdp) != 0:
-            print ("Possible Filtered Ports:")
-            print (filterdp)
-        if (len(openp) == 0) and (len(filterdp) == 0):
-            print ("No ports open")
-    else:
-        print("Host is Down")
+    if len(openp) != 0:
+        print ("Possible Open or Filtered Ports:")
+        print (openp)
+    if len(filterdp) != 0:
+        print ("Possible Filtered Ports:")
+        print (filterdp)
+    if (len(openp) == 0) and (len(filterdp) == 0):
+        print ("No ports open")
+    print(time.time()-start)
 
 

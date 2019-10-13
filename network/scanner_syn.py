@@ -1,10 +1,11 @@
 from scapy.all import IP,sr1,ICMP,TCP,RandShort,sr,L3RawSocket
+import time
 conf.L3socket=L3RawSocket
 host_ip = '127.0.0.1'
 
 openp = []
 filterdp = []
-dest_ports = [i for i in range(1,1000)]
+dest_ports = [i for i in range(22000,25000)]
 def is_up(ip):
     icmp = IP(dst=ip)/ICMP()
     resp = sr1(icmp, timeout=10)
@@ -14,13 +15,12 @@ def is_up(ip):
         return True
 
 def main(dst):
-  conf.verb = 0 
   dest_ports=[dst.split(":")[1]]
   host_ip=dst.split(":")[0]
   openp=[]
   if is_up(host_ip):
       for port in dest_ports:
-          print (port)
+          #print (port)
           response = check_port(host_ip, port)
           if response == 1:
               openp.append(port)
@@ -48,7 +48,7 @@ def check_port(ip, port, result = 1):
             result = 0
         elif resp.haslayer(TCP):
             if resp.getlayer(TCP).flags == 0x12:
-                send_rst = sr(IP(dst=ip)/TCP(sport=src_port, dport=port, flags='AR'), timeout=1)
+                send_rst = sr(IP(dst=ip)/TCP(sport=src_port, dport=port, flags='AR'), timeout=0.5)
                 result = 1
             elif resp.getlayer(TCP).flags == 0x14:
                 result = 0
@@ -63,23 +63,22 @@ def check_port(ip, port, result = 1):
 
 if __name__ == '__main__':
     conf.verb = 0 
-    if is_up(host_ip):
-        for port in dest_ports:
-            print (port)
-            response = check_port(host_ip, port)
-            if response == 1:
-                openp.append(port)
+    start=time.time()
+    for port in dest_ports:
+        #print (port)
+        response = check_port(host_ip, port)
+        if response == 1:
+            openp.append(port)
 
-        if len(openp) != 0:
-            print ("Open Ports:")
-            print (openp)
-        else:
-            print ("No ports open")
-
-        if len(filterdp) != 0:
-            print ("Possible Filtered Ports:")
-            print (filterdp)
+    if len(openp) != 0:
+        print ("Open Ports:")
+        print (openp)
     else:
-        print ("Host is Down")
+        print ("No ports open")
+
+    if len(filterdp) != 0:
+        print ("Possible Filtered Ports:")
+        print (filterdp)
+    print(time.time()-start)
 
 

@@ -30,6 +30,7 @@ def give_job():
     created_by = name_of_container
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
+    up=scanner_tcp.is_up(ip_port)
     if scan_type=='TCP SYN':
       open_ports=scanner_syn.main(ip_port)
     elif scan_type=='TCP FIN':
@@ -41,7 +42,7 @@ def give_job():
     file = open("/mnt/testfile.txt", "a+")
     file.write(" open: "+str(open_ports))
     file.close()
-    send_job_result(open_ports)
+    send_job_result(open_ports,up)
     print(f'{ip_port} {report_id} {scan_type} {created_by}')
     return 'Received job!'
 
@@ -49,10 +50,10 @@ def give_job():
 def home():
     return 'Started'
 
-def send_job_result(open_ports):
+def send_job_result(open_ports,up):
     result = {
             "ip_port": "127.0.0.1",
-            "status": "Alive",
+            "status": up,
             "created_by": name_of_container,
             "open_ports": open_ports
         }
