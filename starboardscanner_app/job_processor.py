@@ -37,6 +37,7 @@ def give_job():
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
     job_queue.put((ip_port, scan_type, report_id))
+
     if not running_scan_flag:
         running_scan()
         # pop first item off queue and process it
@@ -49,10 +50,10 @@ def home():
     return 'Started'
 
 
-def send_job_result():
+def send_job_result(ip_port, status):
     result = {
-        "ip_port": "127.0.0.1",
-        "status": "Alive",
+        "ip_port": ip_port,
+        "status": status,
         "created_by": name_of_container,
         "report_id": args.reportid,
     }

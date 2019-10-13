@@ -28,6 +28,7 @@ def give_job():
     report_id = job_json['report_id']
     scan_type = job_json['scan_type']
     print(f'{ip_port} {report_id} {scan_type} {created_by}')
+
     return 'Received job!'
 
 @app.route('/', methods=['GET'])
