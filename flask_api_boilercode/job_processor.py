@@ -29,7 +29,7 @@ def give_job():
         report_id = job_json['report_id']
         job_queue.put((ip_port, scan_type, report_id))
         # get from queue if you wanna process a job
-    return 'Received job!'
+    return ip_port
 
 
 def send_job_result(open_ports):
