@@ -40,5 +40,5 @@ os.chdir(os.path.join(absolute_dirpath, "network"))
 os.system('docker build -t n .')
 
 for i in range(amount_of_nodes):
-            os.system(f'docker run -p 5000{i}:5000 --network="host"  --name container_{i} --cap-add=NET_ADMIN -v /home/tobias/networkscanner:/mnt n python job_processor.py container_{i} &')
+            os.system(f'docker run -p 5000{i}:5000 --network="host"  --name container_{i} --cap-add=NET_ADMIN -u root -v /home/tobias/networkscanner:/mnt n sudo python job_processor.py container_{i} &')
             #--network="scanner" --ip 172.0.0.{i}

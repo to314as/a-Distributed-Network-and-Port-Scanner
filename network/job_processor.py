@@ -36,15 +36,15 @@ def give_job():
     up=False
     if scan_type=='TCPSYN':
       open_ports=scanner_syn.main(ip_port)
-      if len(open_ports)>0:
+      if open_ports:
         up=True
     elif scan_type=='TCPFIN':
       open_ports=scanner_fin.main(ip_port)
-      if len(open_ports)>0:
+      if open_ports:
         up=True
     elif scan_type=='FULLTCP':
       open_ports=scanner_tcp.main(ip_port)
-      if len(open_ports)>0:
+      if open_ports:
         up=True
     else:
       up=scanner_tcp.is_up(host)

@@ -63,11 +63,11 @@ def home(request):
                 os.chdir('..')
                 os.chdir('network')
                 # os.chdir('/home/tobias/networkscanner/network')  # adjust to your path
-                os.system('docker build -t n .')
+                #os.system('docker build -t n .')
                 for i in range(amount_of_nodes):
                     containers_dict_send[f'container_{i}'] = 0
                     containers_dict_diff[f'container_{i}'] = 0
-                    #os.system(f'docker run -p {50000+i}:{50000+i} --name container_{i} n python job_processor.py container_{i} &')
+                    #os.system(f'docker run -p 5000{i}:5000 --network="host"  --name container_{i} --cap-add=NET_ADMIN -v /home/tobias/networkscanner:/mnt n sudo python job_processor.py container_{i} &')
 
                 job_list = []
                 start_ip_end = [int(x) for x in map(str.strip, start_ip.split('.')) if x][-1]
