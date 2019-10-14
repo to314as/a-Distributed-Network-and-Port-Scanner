@@ -96,7 +96,7 @@ def home(request):
                     }
                     #job_endpoint_of_flask_scanningnode = f'http://0.0.0.0:{5001}'  # depends on container
                     print(job)
-                    job_endpoint_of_flask_scanningnode = f'http://0.0.0.0:5000{c%5}'
+                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:5000{c%5}'
                     c+=1
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()
