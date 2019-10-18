@@ -4,12 +4,13 @@ import select
 import numpy as np
 
 if len(sys.argv) <= 1:
-    ports = 'default_container_name'
+    ports = [55555]
 else:
-    ports = sys.argv[1][1:-1].split(',')
+    ports = sys.argv[2:-2]
 
 HOST = '127.1.1.1'
 servers = []
+print(ports)
 for port in ports:
     print(port)
     ds = (HOST, int(port))
@@ -24,9 +25,10 @@ while True:
     ready_server = readable[0]
     connection, address = ready_server.accept()
     with connection:
-        print('Connected by', addr)
+        print('Connected by', address)
         while True:
             data = connection.recv(1024)
-            if not data:
-                break
-            connection.sendall(data)
+            if data:
+              print(data)
+              connection.send(data)
+            connection, address = ready_server.accept()

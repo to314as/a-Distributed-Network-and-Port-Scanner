@@ -87,7 +87,7 @@ def home(request):
                     for key, value in containers_dict_send.items():
                         received_cnt = Record.objects.filter(created_by=key).count()
                         containers_dict_diff[key] = containers_dict_send[key] - received_cnt
-                    container = min(containers_dict_diff, key=containers_dict_diff.get)
+                    container = min(containers_dict_send, key=containers_dict_send.get)
                     containers_dict_send[container] += 1
                     job = {
                         'ip_port': job,
@@ -96,7 +96,7 @@ def home(request):
                     }
                     #job_endpoint_of_flask_scanningnode = f'http://0.0.0.0:{5001}'  # depends on container
                     print(job)
-                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:5000{c%5}'
+                    job_endpoint_of_flask_scanningnode = f'http://127.0.0.1:{30000+c%int(amount_of_nodes)}'
                     c+=1
                     res = requests.post(job_endpoint_of_flask_scanningnode, json=job)
                 end_time_job = time.process_time()

@@ -1,6 +1,5 @@
 from scapy.all import RandShort,sr1,TCP,sr,IP,ICMP,UDP,L3RawSocket
 import time
-
 conf.L3socket=L3RawSocket #needed because things on lo with scapy can be very messy
 dst_ip = '127.1.1.1'
 src_port = RandShort()

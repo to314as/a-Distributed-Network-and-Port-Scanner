@@ -9,6 +9,7 @@ import scanner_tcp_socket
 import scanner_tcp
 import scanner_fin
 import scanner_syn
+import scanner_bannerGrapping
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -43,11 +44,12 @@ def give_job():
       if open_ports:
         up=True
     elif scan_type=='FULLTCP':
-      open_ports=scanner_tcp.main(ip_port)
+      open_ports=scanner_bannerGrapping.main(ip_port)#scanner_tcp.main(ip_port)
       if open_ports:
         up=True
     else:
       up=scanner_tcp.is_up(host)
+      open_ports=[]
     file = open("/mnt/testfile.txt", "a+")
     file.write(" open: "+str(open_ports))
     file.close()
@@ -71,4 +73,7 @@ def send_job_result(open_ports,up,report_id,host,port):
     print("send job")
 
 if __name__ == '__main__':
-    app.run(debug=True, host=f'127.0.0.1', port=f'5000{name_of_container[-1]}')
+    if name_of_container[-2]=="_":
+      app.run(debug=True, host=f'127.0.0.1', port=f'{30000+int(name_of_container[-1])}')
+    else:
+      app.run(debug=True, host=f'127.0.0.1', port=f'{30000+int(name_of_container[-2:])}')

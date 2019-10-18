@@ -26,4 +26,4 @@ def open_ports(n):
 open_ports_string=open_ports(amount_of_ports)[0]
 open_ports=open_ports(amount_of_ports)[1]
 print(open_ports)
-os.system(f'docker run '+open_ports_string+f' --name victim --cap-add=NET_ADMIN v python3 setup_server.py {open_ports} &')
+os.system(f'docker run '+open_ports_string+f' --name victim2 --network="host" --cap-add=NET_ADMIN v python3 setup_server.py {open_ports} &')
